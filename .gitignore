@@ -2,6 +2,10 @@
 __pycache__/
 *.py[cod]
 *$py.class
+# Pyre type checker
+.pyre/
+
+node_modules/
 
 # C extensions
 *.so
