@@ -1,20 +1,32 @@
 import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 
+// Hardcoded exchange rates
+const exchangeRates = {
+    'USD': 1,
+    'EUR': 0.84, // 1 USD = 0.84 EUR
+    'INR': 74.93, // 1 USD = 74.93 INR
+    'GBP': 0.73 // 1 USD = 0.73 GBP
+};
+
+// Function to convert currency
+function convertCurrency(amount, fromCurrency, toCurrency) {
+    if (!(fromCurrency in exchangeRates) || !(toCurrency in exchangeRates)) {
+        console.error('Unsupported currency.');
+        return null;
+    }
+
+    const amountInUSD = amount / exchangeRates[fromCurrency];
+    const convertedAmount = amountInUSD * exchangeRates[toCurrency];
+    return convertedAmount;
+}
+
 const AllocationForm = (props) => {
     const { dispatch, remaining } = useContext(AppContext);
 
     const [name, setName] = useState('');
     const [cost, setCost] = useState('');
     const [action, setAction] = useState('');
-
-    const convertCurrency = async (amount, fromCurrency, toCurrency) => {
-        const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${fromCurrency}`);
-        const data = await response.json();
-        const exchangeRate = data.rates[toCurrency];
-        const convertedAmount = (amount / exchangeRate).toFixed(2); // Adjusted conversion from GBP to USD
-        return convertedAmount;
-    };
 
     const submitEvent = async () => {
         if (cost > remaining) {
@@ -24,7 +36,7 @@ const AllocationForm = (props) => {
         }
 
         // Convert the cost from GBP to USD
-        const costInUSD = await convertCurrency(cost, 'GBP', 'USD'); // Adjusted conversion from GBP to USD
+        const costInUSD = await convertCurrency(cost, 'GBP', 'USD');
 
         const expense = {
             name: name,
@@ -88,5 +100,4 @@ const AllocationForm = (props) => {
 };
 
 export default AllocationForm;
-
 
