@@ -27,16 +27,17 @@ const AllocationForm = (props) => {
     const [name, setName] = useState('');
     const [cost, setCost] = useState('');
     const [action, setAction] = useState('');
+    const [selectedCurrency, setSelectedCurrency] = useState('USD'); // Added state for selected currency
 
     const submitEvent = async () => {
         if (cost > remaining) {
-            alert("The value cannot exceed remaining funds  £" + remaining);
+            alert("The value cannot exceed remaining funds £" + remaining);
             setCost("");
             return;
         }
 
-        // Convert the cost from GBP to USD
-        const costInUSD = await convertCurrency(cost, 'GBP', 'USD');
+        // Convert the cost to USD
+        const costInUSD = await convertCurrency(cost, selectedCurrency, 'USD');
 
         const expense = {
             name: name,
@@ -65,7 +66,7 @@ const AllocationForm = (props) => {
                     </div>
                     <select className="custom-select" id="inputGroupSelect01" onChange={(event) => setName(event.target.value)}>
                         <option defaultValue>Choose...</option>
-                        <option value="Marketing" name="marketing"> Marketing</option>
+                        <option value="Marketing" name="marketing">Marketing</option>
                         <option value="Sales" name="sales">Sales</option>
                         <option value="Finance" name="finance">Finance</option>
                         <option value="HR" name="hr">HR</option>
@@ -79,6 +80,13 @@ const AllocationForm = (props) => {
                     <select className="custom-select" id="inputGroupSelect02" onChange={(event) => setAction(event.target.value)}>
                         <option defaultValue value="Add" name="Add">Add</option>
                         <option value="Reduce" name="Reduce">Reduce</option>
+                    </select>
+
+                    {/* Dropdown for selecting currency */}
+                    <select className="custom-select" id="inputGroupSelect03" onChange={(event) => setSelectedCurrency(event.target.value)}>
+                        {Object.keys(exchangeRates).map(currency => (
+                            <option key={currency} value={currency}>{currency}</option>
+                        ))}
                     </select>
 
                     <input
@@ -100,4 +108,5 @@ const AllocationForm = (props) => {
 };
 
 export default AllocationForm;
+
 
