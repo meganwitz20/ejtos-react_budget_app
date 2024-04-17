@@ -6,8 +6,8 @@ import Budget from './components/Budget';
 import ExpenseTotal from './components/ExpenseTotal';
 import ExpenseList from './components/ExpenseList';
 import AllocationForm from './components/AllocationForm';
-import RemainingBudget from './components/Remaining';
-   import Currencies from './componets/Currencies' ;
+import RemainingBudget from './components/RemainingBudget'; // Corrected component import
+import Currencies from './components/Currencies'; // Corrected component import
 
 const App = () => {
     return (
@@ -34,7 +34,13 @@ const App = () => {
                 <h3 className='mt-3'>Change allocation</h3>
                 <div className='row mt-3'>
                     <div className='col-sm'>
-                        <AllocationForm/>
+                        <AllocationForm />
+                    </div>
+                </div>
+                <h3 className='mt-3'>Currencies</h3> {/* Corrected capitalization of className */}
+                <div className='row mt-3'>
+                    <div className='col-sm'>
+                        <Currencies />
                     </div>
                 </div>
             </div>
